@@ -30,8 +30,8 @@
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>{{ label }}</SelectLabel>
-                <SelectItem v-for="val in options" :value="val">
-                  {{ val }}
+                <SelectItem v-for="val in options" :value="val.option">
+                  {{ val.option }}
                 </SelectItem>
               </SelectGroup>
             </SelectContent>

@@ -24,29 +24,49 @@
 
 <script setup>
 
-  const formFields = ref([
-    {
-      fieldType: 'select',
-      name: 'title',
-      label: 'Title',
-      placeholder: 'Select your title',
-      options: ['Male', 'Female', 'Banane']
-    },
-    {
-      fieldType: 'input',
-      name: 'username',
-      label: 'Username',
-      type: 'text',
-      placeholder: 'You Username',
-    },
-    {
-      fieldType: 'textarea',
-      name: 'message',
-      label: 'Your Message',
-      type: 'text',
-      placeholder: 'Type your message here',
-    },
-  ])
+  // const formFields = ref([
+  //   {
+  //     fieldType: 'select',
+  //     name: 'title',
+  //     label: 'Title',
+  //     placeholder: 'Select your title',
+  //     options: ['Male', 'Female', 'Banane']
+  //   },
+  //   {
+  //     fieldType: 'input',
+  //     name: 'username',
+  //     label: 'Username',
+  //     type: 'text',
+  //     placeholder: 'You Username',
+  //   },
+  //   {
+  //     fieldType: 'textarea',
+  //     name: 'message',
+  //     label: 'Your Message',
+  //     type: 'text',
+  //     placeholder: 'Type your message here',
+  //   },
+  // ])
+
+  const { getItems } = useDirectusItems();
+
+  const {
+    data: formFields,
+    pendingFormFields,
+    errorFormFields,
+  } = await useAsyncData('dynamic_form', () => {
+    return getItems({      
+      collection: "dynamic_form",      
+      params: { 
+        fields: ['*', '*.*'],
+      },    
+    })
+  },
+  {
+    transform: (data) => data
+  })
+
+  console.log(formFields.value)
 
   import { toTypedSchema } from "@vee-validate/zod"
   import { useForm } from "vee-validate"
