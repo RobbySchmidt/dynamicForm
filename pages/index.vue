@@ -41,8 +41,6 @@
     transform: (data) => data
   })
 
-  console.log(formFields.value)
-
   import { toTypedSchema } from "@vee-validate/zod"
   import { useForm } from "vee-validate"
   import { h } from "vue"
@@ -50,6 +48,7 @@
 
   const formSchema = toTypedSchema(z.object({
     title: z.string().optional(),
+    phone: z.number(),
     username: z.string().min(2).max(50),
     message: z.string().min(2).max(50),
   }))
