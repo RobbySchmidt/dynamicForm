@@ -23,31 +23,6 @@
 </template>
 
 <script setup>
-
-  // const formFields = ref([
-  //   {
-  //     fieldType: 'select',
-  //     name: 'title',
-  //     label: 'Title',
-  //     placeholder: 'Select your title',
-  //     options: ['Male', 'Female', 'Banane']
-  //   },
-  //   {
-  //     fieldType: 'input',
-  //     name: 'username',
-  //     label: 'Username',
-  //     type: 'text',
-  //     placeholder: 'You Username',
-  //   },
-  //   {
-  //     fieldType: 'textarea',
-  //     name: 'message',
-  //     label: 'Your Message',
-  //     type: 'text',
-  //     placeholder: 'Type your message here',
-  //   },
-  // ])
-
   const { getItems } = useDirectusItems();
 
   const {
