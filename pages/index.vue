@@ -41,23 +41,28 @@
   formFields.value.forEach(field => {
     let schema
 
-    if (field.type === 'number') {
-    
-      schema = z.preprocess(
-        val => {
-          if (val === '' || val === null || val === undefined) return undefined
-          return Number(val)
-        },
-        z.number().optional()
-      )
-
-      if (field.required) schema = schema.refine(val => !isNaN(val), `${field.error_message}`)
-      if (field.min !== null && field.min !== undefined) schema = schema.refine(val => val >= field.min!, `${field.label} must be at least ${field.min}`)
-      if (field.max !== null && field.max !== undefined) schema = schema.refine(val => val <= field.max!, `${field.label} must be at most ${field.max}`)
-    } else {
-    
+    if (field.type !== 'number') {
       schema = z.string()
-      if (field.required) schema = schema.min(field.min || 1, `${field.error_message}`)
+      
+      // Required first
+      if (field.required) {
+        schema = schema.nonempty(`${field.error_message}`)
+      }
+
+      // Then min (only if value exists)
+      if (field.min !== null && field.min !== undefined) {
+        schema = schema.refine(val => !val || val.length >= field.min!, 
+          `${field.label} needs to be at least ${field.min} characters`)
+      }
+
+      // Optional: max length
+      if (field.max !== null && field.max !== undefined) {
+        schema = schema.refine(val => !val || val.length <= field.max!, 
+          `${field.label} cannot exceed ${field.max} characters`)
+      }
+    } else {
+      schema = z.string()
+      if (field.required) schema = schema.min(field.min || 1, `${field.label} needs to be at least ${field.min || 1} characters`)
     }
 
     formValues[field.name] = schema
