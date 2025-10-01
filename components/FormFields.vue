@@ -1,7 +1,7 @@
 <template>
   <template v-if="fieldType === 'textarea'">
     <FormField v-slot="{ componentField }" :name="name">
-      <FormItem>
+      <FormItem class="relative">
         <FormLabel>{{ label }}</FormLabel>
         <FormControl>
           <Textarea
@@ -12,14 +12,14 @@
         <FormDescription>
           {{ description }}
         </FormDescription>
-        <FormMessage />
+        <FormMessage class="absolute -bottom-4" />
       </FormItem>
     </FormField>
   </template>
 
   <template v-else-if="fieldType === 'select'">
     <FormField v-slot="{ componentField }" :name="name">
-      <FormItem>
+      <FormItem class="relative">
         <FormLabel>{{ label }}</FormLabel>
         <FormControl>
           <Select
@@ -40,14 +40,14 @@
         <FormDescription>
           {{ description }}
         </FormDescription>
-        <FormMessage />
+        <FormMessage class="absolute -bottom-4" />
       </FormItem>
     </FormField>
   </template>
 
   <template v-else>
     <FormField v-slot="{ componentField }" :name="name">
-      <FormItem>
+      <FormItem class="relative">
         <FormLabel>{{ label }}</FormLabel>
         <FormControl>
           <Input 
@@ -58,7 +58,7 @@
         <FormDescription>
           {{ description }}
         </FormDescription>
-        <FormMessage />
+        <FormMessage class="absolute -bottom-4" />
       </FormItem>
     </FormField>
   </template>
@@ -68,7 +68,7 @@
   const props = defineProps<{
     fieldType: string
     name: string
-    label: string
+    label?: string
     type?: 'text' | 'number' | 'email' | 'password' | 'url' | 'search' | 'tel'
     placeholder?: string
     description?: string

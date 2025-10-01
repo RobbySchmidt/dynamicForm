@@ -3,18 +3,43 @@
     <form 
       class="max-w-3xl mx-auto space-y-6" 
       @submit.prevent="onSubmit"
-    >
-      <FormFields
-        v-for="field in formFields"
-        :key="field.id"
-        :fieldType="field.fieldType"
-        :name="field.name"
-        :label="field.label"
-        :type="field.type"
-        :placeholder="field.placeholder"
-        :description="field.description"
-        :options="field.options"
-      />
+      >
+      <template 
+        v-for="(group, index) in groupedFields" 
+        :key="index">
+        <!-- Wrap consecutive half-width fields in a fieldset -->
+        <div 
+          v-if="group.halfWidth"
+          class="grid grid-cols-2 gap-6">
+          <FormFields
+            v-for="field in group.fields"
+            :key="field.id"
+            :fieldType="field.fieldType"
+            :name="field.name"
+            :label="field.label"
+            :type="field.type"
+            :placeholder="field.placeholder"
+            :description="field.description"
+            :options="field.options"
+          />
+        </div>
+
+        <!-- Render full-width fields normally -->
+        <template v-else>
+          <FormFields
+            v-for="field in group.fields"
+            :key="field.id"
+            :fieldType="field.fieldType"
+            :name="field.name"
+            :label="field.label"
+            :type="field.type"
+            :placeholder="field.placeholder"
+            :description="field.description"
+            :options="field.options"
+          />
+        </template>
+      </template>
+
 
       <Button type="submit">Submit</Button>
     </form>
@@ -34,6 +59,28 @@
       collection: "dynamic_form",      
       params: { fields: ['*', '*.*'] },    
     })
+  })
+
+  const groupedFields = computed(() => {
+    const groups: { halfWidth: boolean; fields: any[]; legend?: string }[] = []
+    let currentGroup: { halfWidth: boolean; fields: any[]; legend?: string } | null = null
+
+    formFields.value?.forEach(field => {
+      const isHalf = !!field.half_width
+      const legend = field.legend || undefined
+
+      if (!currentGroup || currentGroup.halfWidth !== isHalf) {
+        // Start a new group
+        currentGroup = { halfWidth: isHalf, fields: [field], legend: legend }
+        groups.push(currentGroup)
+      } else {
+        // Add to current group
+        currentGroup.fields.push(field)
+        // Optionally, you can decide if legend should come from first field only
+      }
+    })
+
+    return groups
   })
 
   const formValues: Record<string, any> = {}
