@@ -2,7 +2,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  modules: ['nuxt-directus', 'shadcn-nuxt'],
+  modules: ['nuxt-directus', 'shadcn-nuxt', '@nuxt/image'],
 
   css: ['~/assets/css/tailwind.css'],
   vite: {
@@ -18,6 +18,12 @@ export default defineNuxtConfig({
     prefix: '',
     
     componentDir: './components/ui'
+  },
+
+  image: {
+    directus: {
+      baseURL: process.env.DIRECTUS_URL + '/assets/'
+    }
   },
 
   directus: {      
