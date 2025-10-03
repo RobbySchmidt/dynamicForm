@@ -29,6 +29,22 @@ export default defineNuxtConfig({
     public: {
       directusUrl: process.env.DIRECTUS_URL,
     },
+
+    nodemailerConfig: {
+      host: process.env.EMAIL_HOST,
+      emailTo: process.env.EMAIL_TO,
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_SECRET,
+      },
+      tls: { rejectUnauthorized: false },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 30000,
+    },
     
     redirects: false,
   },
